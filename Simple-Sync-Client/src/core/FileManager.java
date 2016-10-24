@@ -1,13 +1,6 @@
 package core;
 
-
 public class FileManager {
-	
-	
-	
-	
-	
-	
 
 	/*
 	 * public static void makeDir(Path path) {

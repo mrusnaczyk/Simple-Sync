@@ -1,5 +1,10 @@
 package net;
 
+import java.io.IOException;
+import java.net.Authenticator;
+import java.net.CookieManager;
+import java.net.URL;
+
 /**
  * 
  * @author Mateusz Rusnaczyk
@@ -7,7 +12,7 @@ package net;
  * @since 0.0.1
  */
 
-public class Authenticator {
+public class LoginAuthenticator {
 
 	/**
 	 * Authenticates the user's credentials with the server
@@ -26,8 +31,12 @@ public class Authenticator {
 	 *            A hashed version of the user's password
 	 * @return A ConnectionManager that the client will direct all
 	 *         communications with the server through
+	 * @throws IOException
 	 */
-	public static ConnectionManager logIn(String userHash, String passwordHash) {
+	public static ConnectionManager logIn(String userHash, String passwordHash, URL server) throws IOException {
+		CookieManager cm = new CookieManager();
+		server.openConnection();
+
 		return null;
 	}
 
@@ -35,8 +44,9 @@ public class Authenticator {
 	 * Logs a user out
 	 * 
 	 * <p>
-	 * Requests the user's 
+	 * Requests the user's
 	 * </p>
+	 * 
 	 * @param connectionManager
 	 *            ConnectionManager to be killed
 	 * 
