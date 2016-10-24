@@ -8,7 +8,7 @@ public class ConnectionManager {
 
 	public ConnectionManager(String sessionID, String authKey, CookieManager cm) {
 		sessionCookies = cm;
-		CookieHandler.setDefault(sessionCookies);
+		CookieHandler.setDefault(sessionCookies); 
 
 	}
 
