@@ -1,12 +1,13 @@
 package net;
 
 import java.io.IOException;
-import java.net.Authenticator;
+import java.io.InputStreamReader;
+import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.URL;
+import java.net.URLConnection;
 
 /**
- * 
  * @author Mateusz Rusnaczyk
  * @version 0.0.1
  * @since 0.0.1
@@ -35,9 +36,20 @@ public class LoginAuthenticator {
 	 */
 	public static ConnectionManager logIn(String userHash, String passwordHash, URL server) throws IOException {
 		CookieManager cm = new CookieManager();
-		server.openConnection();
+		CookieHandler.setDefault(cm);
+		URLConnection uc = server.openConnection();
+		String r = "";
+		System.out.println(uc.getContentType());
 
-		return null;
+		InputStreamReader in = new InputStreamReader(uc.getInputStream());
+
+		int s;
+		while ((s = in.read()) != -1) {
+			r += (char) s;
+		}
+		System.out.println(r);
+
+		return new ConnectionManager("test", "test1233", cm);
 	}
 
 	/**

@@ -10,6 +10,8 @@ public class ConnectionManager {
 		sessionCookies = cm;
 		CookieHandler.setDefault(sessionCookies); 
 
+		System.out.println(sessionCookies.getCookieStore().getCookies().toString());
+		
 	}
 
 }
