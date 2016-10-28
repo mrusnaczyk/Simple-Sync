@@ -6,12 +6,20 @@ public class ConnectionManager {
 
 	private CookieManager sessionCookies;
 
-	public ConnectionManager(String sessionID, String authKey, CookieManager cm) {
+	public ConnectionManager(CookieManager cm) {
 		sessionCookies = cm;
 		CookieHandler.setDefault(sessionCookies); 
 
 		System.out.println(sessionCookies.getCookieStore().getCookies().toString());
 		
 	}
+	
+	
+	public void getRemoteDirectoryTree(){
+		
+	}
+	
+	
+	
 
 }

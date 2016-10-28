@@ -38,18 +38,16 @@ public class LoginAuthenticator {
 		CookieManager cm = new CookieManager();
 		CookieHandler.setDefault(cm);
 		URLConnection uc = server.openConnection();
-		String r = "";
-		System.out.println(uc.getContentType());
-
 		InputStreamReader in = new InputStreamReader(uc.getInputStream());
 
+		String r = "";
 		int s;
 		while ((s = in.read()) != -1) {
 			r += (char) s;
 		}
 		System.out.println(r);
 
-		return new ConnectionManager("test", "test1233", cm);
+		return new ConnectionManager(cm);
 	}
 
 	/**

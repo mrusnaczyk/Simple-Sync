@@ -9,6 +9,7 @@ import net.LoginAuthenticator;
 import ui.LoginUI;
 
 public class Main {
+	// Path where files are stored
 	public static final Path homeDir = Paths.get(System.getProperty("user.home") + "\\SimpleSync");
 
 	public static void main(String[] args) throws MalformedURLException, IOException {
