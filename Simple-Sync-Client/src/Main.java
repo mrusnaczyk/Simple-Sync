@@ -33,10 +33,7 @@ public class Main {
 
 		// Authenticator.setDefault(new LoginAuthenticator());
 		ConnectionManager c = new ConnectionManager();
-		System.out.println("Temporary Key: " + String.valueOf(c.getKey()));
-		/*String test = c.getKey();
-		System.out.println(test);
-		System.exit(0);*/
+		System.out.println(String.valueOf(c.getKey()));
 		
 	}
 
