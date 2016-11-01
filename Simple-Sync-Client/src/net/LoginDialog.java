@@ -1,15 +1,19 @@
-package ui;
+package net;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.Authenticator;
+import java.net.PasswordAuthentication;
 
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 
-import core.*;
-
-public class LoginUI extends Thread {
-
+class LoginDialog extends Authenticator {
 	private static final int WINDOW_WIDTH = 330;
 	private static final int WINDOW_HEIGHT = 210;
 
@@ -22,15 +26,13 @@ public class LoginUI extends Thread {
 	private JLabel lblPassword;
 	private JLabel lblHost;
 
-	public LoginUI() {
-		run("", false);
+	private PasswordAuthentication response = null;
+
+	public LoginDialog() {
+		this("");
 	}
 
-	public LoginUI(String host) {
-		run(host, true);
-	}
-
-	private void run(String host, boolean hostLocked) {
+	public LoginDialog(String host) {
 		frame = new JFrame("Simple Sync Login");
 
 		txtHost = new JTextField(host);
@@ -42,13 +44,13 @@ public class LoginUI extends Thread {
 		lblPassword = new JLabel("Password: ");
 		lblHost = new JLabel("Host: ");
 
-		if (hostLocked) {
+		if (host.isEmpty()) {
 			txtHost.setEditable(false);
 		} else {
 			txtHost.setEditable(true);
 		}
 
-		btnLogin.addActionListener(new ButtonClickListener());
+		btnLogin.addActionListener(new submitClick());
 		btnLogin.setActionCommand("Login");
 
 		txtUsername.setSize(220, 25);
@@ -84,20 +86,25 @@ public class LoginUI extends Thread {
 		frame.setIconImage(Toolkit.getDefaultToolkit().getImage("lock.png"));
 		frame.setBackground(Color.red);
 		frame.getContentPane().setBackground(new Color(236, 240, 241));
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+	}
 
+	private void show() {
 		frame.setVisible(true);
 	}
 
-	private class ButtonClickListener implements ActionListener {
+	public PasswordAuthentication getPasswordAuthentication() {
+		this.show();
+		return this.response;
+	}
+
+	private class submitClick implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-
-			String command = e.getActionCommand();
-			if (command.equals("Login")) {
-				btnLogin.setText("Logging in...");
-				Main.setLoginInfo(txtHost.getText(), txtUsername.getText(), txtPassword.getText());
-			}
-
+			btnLogin.setText("Logging in...");
+			response = new PasswordAuthentication(txtUsername.getText(), txtPassword.getPassword());
+			txtPassword.setText("");
+			frame.dispose();
 		}
 	}
+
 }

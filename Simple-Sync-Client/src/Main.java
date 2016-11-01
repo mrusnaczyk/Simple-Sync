@@ -1,18 +1,16 @@
-package core;
-
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.nio.file.*;
+import java.net.Authenticator;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
-import net.LoginAuthenticator;
-import ui.LoginUI;
+import net.ConnectionManager;
 
 public class Main {
 	// Path where files are stored
 	public static final Path homeDir = Paths.get(System.getProperty("user.home") + "\\SimpleSync");
 
-	public static void main(String[] args) throws MalformedURLException, IOException {
+	public static void main(String[] args) {
 		// Check if main SimpleSync directory exists, if not, create it
 		if (!Files.exists(homeDir)) {
 			System.out.println("No SimpleSync dir... making a new one");
@@ -33,18 +31,13 @@ public class Main {
 			}
 		}
 
-		// Open the login GUI
-		Thread ui = new LoginUI("cs.rusnaczyk.tk");
-		ui.start();
-
+		// Authenticator.setDefault(new LoginAuthenticator());
+		ConnectionManager c = new ConnectionManager();
+		System.out.println("Temporary Key: " + String.valueOf(c.getKey()));
+		/*String test = c.getKey();
+		System.out.println(test);
+		System.exit(0);*/
+		
 	}
 
-	public static void setLoginInfo(String host, String user, String password) {
-		try {
-			LoginAuthenticator.logIn(user, password, new URL("http", "cs.rusnaczyk.tk", 80, "/phpTest/submit.php"));
-		} catch (Exception e) {
-			e.printStackTrace(System.out);
-		}
-
-	}
 }
