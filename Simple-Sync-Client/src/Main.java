@@ -5,6 +5,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import net.ConnectionManager;
+import sync.SyncManager;
 
 public class Main {
 	// Path where files are stored
@@ -30,11 +31,14 @@ public class Main {
 				e.printStackTrace();
 			}
 		}
-
-		// Authenticator.setDefault(new LoginAuthenticator());
-		ConnectionManager c = new ConnectionManager();
+		
+		ConnectionManager c = new ConnectionManager("159.203.46.15");
 		System.out.println(String.valueOf(c.getKey()));
+		SyncManager sync = new SyncManager(c);
+		sync.downloadFile("test_file/test.pdf");
+		sync.downloadFile("test_file/testpic.png");
+		//sync.downloadFile("test_file/test01.txt");
+		//sync.downloadFile("test_file/test02.txt");
 		
 	}
-
 }

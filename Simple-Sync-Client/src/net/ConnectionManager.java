@@ -6,6 +6,7 @@ import java.net.Authenticator;
 import java.net.HttpURLConnection;
 import java.net.InetAddress;
 import java.net.PasswordAuthentication;
+import java.net.Socket;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.UnknownHostException;
@@ -15,21 +16,18 @@ import java.net.UnknownHostException;
  *
  */
 public class ConnectionManager {
-	LoginDialog auth;
-	PasswordAuthentication a;
+	private LoginDialog auth;
+	private PasswordAuthentication a;
+	private String domain;
 
-	public ConnectionManager() {
+	public ConnectionManager(String domain) {
 		System.setProperty("http.agent", "SimpleSync/0.0.1 (Windows)");
-		// auth = new LoginDialog();
-		// Authenticator.setDefault(auth);
-		// Authenticator.requestPasswordAuthentication("",
-		// InetAddress.getByName("cs.rusnaczyk.tk"), 80, "", "", "");
-
+		this.domain = domain;
 	}
 
 	/**
 	 * Returns an authentication token for the client to use to sync files. This
-	 * method requires that the user have supplied valid credentials
+	 * method requires that the user has supplied valid credentials.
 	 * 
 	 * @return An authentication token as a char array
 	 */
@@ -71,5 +69,12 @@ public class ConnectionManager {
 	 */
 	public void revokeKey(String key) {
 		// Add throws exception
+	}
+
+	public URL getURL(String path) throws UnknownHostException, IOException {
+		/**
+		 * TODO - Check connect - Check authentication
+		 */
+		return new URL("http", domain, "/SimpleSync" + path);
 	}
 }
