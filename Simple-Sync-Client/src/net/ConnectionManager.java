@@ -2,11 +2,7 @@ package net;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.Authenticator;
-import java.net.HttpURLConnection;
-import java.net.InetAddress;
 import java.net.PasswordAuthentication;
-import java.net.Socket;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.UnknownHostException;
@@ -39,7 +35,7 @@ public class ConnectionManager {
 		char[] key = null;
 		String k = "";
 		try {
-			url = new URL("http", "cs.rusnaczyk.tk", "/SimpleSync/genKey.php");
+			url = new URL("http", domain, "/SimpleSync/auth/genKey.php");
 			conn = url.openConnection();
 			InputStreamReader in = new InputStreamReader(conn.getInputStream());
 			int c;

@@ -12,6 +12,16 @@ public class Main {
 	public static final Path homeDir = Paths.get(System.getProperty("user.home") + "\\SimpleSync");
 
 	public static void main(String[] args) {
+		createUserDir();
+		
+		ConnectionManager c = new ConnectionManager("159.203.46.15");
+		System.out.println(String.valueOf(c.getKey()));
+		SyncManager sync = new SyncManager(c);
+		sync.downloadFile("test_file/NextcloudUserManual.pdf");
+		
+	}
+	
+	private static void createUserDir(){
 		// Check if main SimpleSync directory exists, if not, create it
 		if (!Files.exists(homeDir)) {
 			System.out.println("No SimpleSync dir... making a new one");
@@ -31,14 +41,6 @@ public class Main {
 				e.printStackTrace();
 			}
 		}
-		
-		ConnectionManager c = new ConnectionManager("159.203.46.15");
-		System.out.println(String.valueOf(c.getKey()));
-		SyncManager sync = new SyncManager(c);
-		sync.downloadFile("test_file/test.pdf");
-		sync.downloadFile("test_file/testpic.png");
-		//sync.downloadFile("test_file/test01.txt");
-		//sync.downloadFile("test_file/test02.txt");
-		
 	}
+	
 }

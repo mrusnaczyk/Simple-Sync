@@ -1,12 +1,12 @@
 package sync;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileWriter;
+import java.io.InputStream;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 
 import net.ConnectionManager;
 
@@ -20,25 +20,21 @@ public class SyncManager {
 
 	public void downloadFile(String path) {
 		URLConnection conn;
-		BufferedInputStream in;
-		FileWriter writer;
-
+		InputStream in;
+	
 		try {
-			String query = "/sync/download.php?f=" + URLEncoder.encode(path, "UTF-8");
+			String query = "/sync/download.php?f=" + URLEncoder.encode(path,"UTF-8");
 			conn = manager.getURL(query).openConnection();
-			in = new BufferedInputStream(conn.getInputStream());
-			writer = new FileWriter(new File(Paths.get(homeDir.toString()) + "/" + path));
+			in = conn.getInputStream();
 
-			int incoming = 0;
-			while ((incoming = in.read()) != -1) {
-				writer.write(incoming);
-			}
-			writer.close();
+			Files.copy(in, Paths.get(homeDir.toString() + "/" + path), StandardCopyOption.REPLACE_EXISTING);
+			in.close();
 
 		} catch (Exception e) {
 			e.printStackTrace(System.out);
 		}
-
 	}
+	
+	
 
 }
