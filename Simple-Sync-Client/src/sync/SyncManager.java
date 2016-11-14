@@ -31,7 +31,7 @@ public class SyncManager {
 			in.close();
 
 		} catch (Exception e) {
-			e.printStackTrace(System.out);
+			System.out.println(e.getMessage());
 		}
 	}
 	
