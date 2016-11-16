@@ -2,6 +2,7 @@ package net;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.Authenticator;
 import java.net.PasswordAuthentication;
 import java.net.URL;
 import java.net.URLConnection;
@@ -18,7 +19,10 @@ public class ConnectionManager {
 
 	public ConnectionManager(String domain) {
 		System.setProperty("http.agent", "SimpleSync/0.0.1 (Windows)");
-		this.domain = domain;
+		this.domain = domain;		
+		auth = new LoginDialog();
+		Authenticator.setDefault(auth);
+		a = auth.getPasswordAuthentication();
 	}
 
 	/**
@@ -35,7 +39,7 @@ public class ConnectionManager {
 		char[] key = null;
 		String k = "";
 		try {
-			url = new URL("http", domain, "/SimpleSync/auth/genKey.php");
+			url = new URL("http", domain, "/SimpleSync/genKey.php");
 			conn = url.openConnection();
 			InputStreamReader in = new InputStreamReader(conn.getInputStream());
 			int c;

@@ -7,15 +7,17 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.TimerTask;
 
 import net.ConnectionManager;
 
-public class SyncManager {
+public class SyncManager extends TimerTask{
 	private static final Path homeDir = Paths.get(System.getProperty("user.home") + "\\SimpleSync");
 	private ConnectionManager manager;
 
 	public SyncManager(ConnectionManager m) {
 		manager = m;
+		
 	}
 
 	public void downloadFile(String path) {
@@ -23,7 +25,7 @@ public class SyncManager {
 		InputStream in;
 	
 		try {
-			String query = "/sync/download.php?f=" + URLEncoder.encode(path,"UTF-8");
+			String query = "/download.php?f=" + URLEncoder.encode(path,"UTF-8");
 			conn = manager.getURL(query).openConnection();
 			in = conn.getInputStream();
 
@@ -33,6 +35,12 @@ public class SyncManager {
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
+	}
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	

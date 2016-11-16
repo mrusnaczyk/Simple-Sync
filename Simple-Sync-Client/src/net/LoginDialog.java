@@ -30,6 +30,7 @@ class LoginDialog extends Authenticator {
 
 	public LoginDialog() {
 		this("");
+		this.show();
 	}
 
 	public LoginDialog(String host) {
@@ -94,7 +95,7 @@ class LoginDialog extends Authenticator {
 	}
 
 	public PasswordAuthentication getPasswordAuthentication() {
-		this.show();
+		//this.show();
 		return this.response;
 	}
 
