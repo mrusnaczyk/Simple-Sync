@@ -39,7 +39,11 @@ public class SyncManager extends TimerTask{
 
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
+		System.out.println("Syncing....");
+		this.downloadFile("test_file/NextcloudUserManual.pdf");
+		System.out.println("Synced manual.");
+		this.downloadFile("test_file/testpic.png");
+		System.out.println("Synced image.");
 		
 	}
 	

@@ -3,6 +3,9 @@ import java.net.Authenticator;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.ScheduledExecutorService;
 
 import net.ConnectionManager;
 import util.Settings;
@@ -15,9 +18,10 @@ public class Main {
 		
 		ConnectionManager c = new ConnectionManager(Settings.domain);
 		System.out.println(String.valueOf(c.getKey()));
-		SyncManager sync = new SyncManager(c);
-		sync.downloadFile("test_file/NextcloudUserManual.pdf");
-		sync.downloadFile("test_file/testpic.png");
+		//SyncManager sync = new SyncManager(c);
+		Timer t = new Timer();
+		t.schedule(new SyncManager(c),0, Settings.syncInterval * 1000);
+
 		
 	}
 	
