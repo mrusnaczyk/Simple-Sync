@@ -17,12 +17,8 @@ public class Main {
 		createUserDir();
 		
 		ConnectionManager c = new ConnectionManager(Settings.domain);
-		System.out.println(String.valueOf(c.getKey()));
-		//SyncManager sync = new SyncManager(c);
 		Timer t = new Timer();
-		t.schedule(new SyncManager(c),0, Settings.syncInterval * 1000);
-
-		
+		t.schedule(new SyncManager(c),0, Settings.syncInterval * 1000);		
 	}
 	
 	private static void createUserDir(){

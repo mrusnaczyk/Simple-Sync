@@ -7,46 +7,43 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.TimerTask;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import net.ConnectionManager;
 
 public class SyncManager extends TimerTask{
-	private static final Path homeDir = Paths.get(System.getProperty("user.home") + "\\SimpleSync");
 	private ConnectionManager manager;
 
 	public SyncManager(ConnectionManager m) {
 		manager = m;
-		
 	}
-
-	public void downloadFile(String path) {
-		URLConnection conn;
-		InputStream in;
 	
-		try {
-			String query = "/download.php?f=" + URLEncoder.encode(path,"UTF-8");
-			conn = manager.getURL(query).openConnection();
-			in = conn.getInputStream();
-
-			Files.copy(in, Paths.get(homeDir.toString() + "/" + path), StandardCopyOption.REPLACE_EXISTING);
-			in.close();
-
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
-	}
-
-	@Override
+	@SuppressWarnings("unchecked")
 	public void run() {
-		System.out.println("Syncing....");
-		this.downloadFile("test_file/NextcloudUserManual.pdf");
-		System.out.println("Synced manual.");
-		this.downloadFile("test_file/testpic.png");
-		System.out.println("Synced image.");
+		ArrayList<FileOperation> operations = new ArrayList<FileOperation>();
+		ArrayList<String> result = new ArrayList<String>();
 		
-	}
+		operations.add(new FileDownload(manager, "test_file/NextcloudUserManual.pdf"));
+		operations.add(new FileDownload(manager, "test_file/testpic.png"));
+		
+		ExecutorService exec = Executors.newFixedThreadPool(operations.size());
+		
+		for(FileOperation o : operations){
+			try {
+				result.add(exec.submit((Callable<String>) o).get());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+		}
+		
+		
+	}	
 	
-	
-
 }

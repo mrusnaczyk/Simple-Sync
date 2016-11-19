@@ -19,7 +19,7 @@ public class ConnectionManager {
 
 	public ConnectionManager(String domain) {
 		System.setProperty("http.agent", "SimpleSync/0.0.1 (Windows)");
-		this.domain = domain;		
+		this.domain = domain;
 		auth = new LoginDialog();
 		Authenticator.setDefault(auth);
 		a = auth.getPasswordAuthentication();
@@ -71,10 +71,15 @@ public class ConnectionManager {
 		// Add throws exception
 	}
 
-	public URL getURL(String path) throws UnknownHostException, IOException {
+	public URL getURL(String path) {
 		/**
 		 * TODO - Check connect - Check authentication
 		 */
-		return new URL("http", domain, "/SimpleSync" + path);
+		try {
+			return new URL("http", domain, "/SimpleSync" + path);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return null;
+		}
 	}
 }
