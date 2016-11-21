@@ -6,7 +6,6 @@ import java.net.Authenticator;
 import java.net.PasswordAuthentication;
 import java.net.URL;
 import java.net.URLConnection;
-import java.net.UnknownHostException;
 
 /**
  * @author Mateusz Rusnaczyk

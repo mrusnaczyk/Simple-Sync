@@ -1,11 +1,7 @@
 import java.io.IOException;
-import java.net.Authenticator;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.ScheduledExecutorService;
 
 import net.ConnectionManager;
 import util.Settings;

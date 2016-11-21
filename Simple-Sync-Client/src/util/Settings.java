@@ -8,5 +8,5 @@ public class Settings {
 	//IP or FQDN of the server
 	public static final String domain = "159.203.46.15";
 	//How often the server will sync in seconds
-	public static final int syncInterval = 30;
+	public static final int syncInterval = 5;
 }
