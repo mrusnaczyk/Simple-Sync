@@ -1,5 +1,6 @@
 package sync;
 
+import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
@@ -32,11 +33,11 @@ public class FileDownload extends FileOperation implements Callable<String> {
 
 	public String call() {
 		URLConnection conn;
-		InputStream in;
+		BufferedInputStream in;
 
 		try {
 			conn = u.openConnection();
-			in = conn.getInputStream();
+			in = new BufferedInputStream(conn.getInputStream());
 
 			Files.copy(in, Paths.get(Settings.homeDir.toString() + "/" + p), StandardCopyOption.REPLACE_EXISTING);
 			in.close();
