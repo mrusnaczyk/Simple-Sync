@@ -23,6 +23,8 @@ public class SyncManager extends TimerTask {
 	public void run() {
 		ArrayList<FileOperation> operations = new ArrayList<FileOperation>();
 		ArrayList<String> result = new ArrayList<String>();
+		
+		getRemoteTree();
 
 		operations.add(new FileDownload(manager, "test_file/NextcloudUserManual.pdf"));
 		operations.add(new FileDownload(manager, "test_file/testpic.png"));
@@ -53,14 +55,18 @@ public class SyncManager extends TimerTask {
 		URL u = manager.getURL("/remoteFileTree.php");
 		URLConnection conn;
 		BufferedInputStream in;
+		JSONTokener tokener;
 		JSONObject tree;
 
 		try {
 			conn = u.openConnection();
 			in = new BufferedInputStream(conn.getInputStream());
+			tokener = new JSONTokener(in);
+			tree = new JSONObject(tokener);
+			System.out.println(tree.toString());
 			
 		} catch (Exception e) {
-
+			e.printStackTrace(System.out);
 		}
 
 		return null;
