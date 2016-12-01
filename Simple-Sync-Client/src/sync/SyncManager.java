@@ -39,7 +39,7 @@ public class SyncManager extends TimerTask {
 
 		}
 
-		manager.revokeKey("lol");
+		//manager.revokeKey("lol");
 
 	}
 
@@ -71,5 +71,6 @@ public class SyncManager extends TimerTask {
 
 		return null;
 	}
+	
 
 }

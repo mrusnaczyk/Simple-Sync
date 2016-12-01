@@ -81,4 +81,12 @@ public class ConnectionManager {
 			return null;
 		}
 	}
+	
+	public boolean isAuthenticated(){
+		return false;
+	}
+	
+	private void checkIn(){
+		//Client reieves key when logging in
+	}
 }
