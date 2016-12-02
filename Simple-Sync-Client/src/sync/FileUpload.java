@@ -12,12 +12,12 @@ import java.util.concurrent.Callable;
 import net.ConnectionManager;
 import util.Settings;
 
-public class FileUpload extends FileOperation implements Callable<String>{
+public class FileUpload extends FileOperation implements Callable<String> {
 
 	private URL u;
 	private String p;
 	private String q;
-	
+
 	public FileUpload(ConnectionManager m, String filePath) {
 		p = filePath;
 
