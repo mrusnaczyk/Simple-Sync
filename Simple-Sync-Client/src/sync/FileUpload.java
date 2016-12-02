@@ -8,6 +8,7 @@ import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.concurrent.Callable;
+import javax.net.ssl.*;
 
 import net.ConnectionManager;
 import util.Settings;
@@ -19,7 +20,7 @@ public class FileUpload extends FileOperation implements Callable<String> {
 	private String q;
 
 	public FileUpload(ConnectionManager m, String filePath) {
-		p = filePath;
+		p = filePath; 
 
 		try {
 			q = "/upload.php?f=" + URLEncoder.encode(filePath, "UTF-8");

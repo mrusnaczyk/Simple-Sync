@@ -6,6 +6,7 @@ import java.net.Authenticator;
 import java.net.PasswordAuthentication;
 import java.net.URL;
 import java.net.URLConnection;
+import javax.net.ssl.*;
 
 /**
  * @author Mateusz Rusnaczyk

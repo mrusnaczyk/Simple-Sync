@@ -8,6 +8,7 @@ import java.util.TimerTask;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import javax.net.ssl.*;
 import org.json.*;
 
 import net.ConnectionManager;
