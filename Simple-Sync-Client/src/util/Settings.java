@@ -9,4 +9,5 @@ public class Settings {
 	public static final String domain = "159.203.46.15";
 	//How often the server will sync in seconds
 	public static final int syncInterval = 5;
+	//
 }
