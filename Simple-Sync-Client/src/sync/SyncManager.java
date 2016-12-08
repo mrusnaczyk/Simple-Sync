@@ -37,39 +37,43 @@ public class SyncManager extends TimerTask {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-
 		}
-
-		//manager.revokeKey("lol");
-
 	}
 
-	private void sync() {
+	private ArrayList<FileOperation> sync() {
 		/*
 		 * 1) getRemoteTree() - Returns a JSON representation of the user's remote storage 
 		 * 2) Parse JSON file - determine which files to upload and which to download; 
 		 * 3) Add file requests to queue
 		 */
+		JSONObject remoteTree = getRemoteTree();
+		
+		return null;
 	}
+	
 
-	private String[][] getRemoteTree() {
+
+	private JSONObject getRemoteTree() {
 		URL u = manager.getURL("/remoteFileTree.php");
 		URLConnection conn;
 		BufferedInputStream in;
 		JSONTokener tokener;
 		JSONObject tree;
 
+		//Get the tree from the server
 		try {
 			conn = u.openConnection();
 			in = new BufferedInputStream(conn.getInputStream());
 			tokener = new JSONTokener(in);
 			tree = new JSONObject(tokener);
-			System.out.println(tree.toString());
-			
+			//return new JSONObject(tokener);
+			//System.out.println(tree.toString());
 		} catch (Exception e) {
 			e.printStackTrace(System.out);
 		}
-
+		
+		//Parse the tree and convert it into an array
+		
 		return null;
 	}
 	
