@@ -19,6 +19,7 @@ public class FileDownload extends FileOperation implements Callable<String> {
 	private URL u;
 	private String q;
 	private String p;
+	private ConnectionManager m;
 
 	public FileDownload(ConnectionManager m, String filePath) {
 		p = filePath;
@@ -28,7 +29,9 @@ public class FileDownload extends FileOperation implements Callable<String> {
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
-		u = m.getURL(q);
+		
+		this.m = m;
+		//u = m.getURL(q);
 	}
 
 	public String call() {
@@ -36,7 +39,8 @@ public class FileDownload extends FileOperation implements Callable<String> {
 		BufferedInputStream in;
 
 		try {
-			conn = u.openConnection();
+			//conn = u.openConnection();
+			conn = m.getURLConnection(q);
 			in = new BufferedInputStream(conn.getInputStream());
 
 			Files.copy(in, Paths.get(Settings.homeDir.toString() + "/" + p), StandardCopyOption.REPLACE_EXISTING);

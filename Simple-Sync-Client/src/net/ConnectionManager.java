@@ -3,9 +3,12 @@ package net;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Authenticator;
+import java.net.HttpURLConnection;
 import java.net.PasswordAuthentication;
 import java.net.URL;
 import java.net.URLConnection;
+import java.security.cert.X509Certificate;
+
 import javax.net.ssl.*;
 
 /**
@@ -19,6 +22,10 @@ public class ConnectionManager {
 
 	public ConnectionManager(String domain) {
 		System.setProperty("http.agent", "SimpleSync/0.0.1 (Windows)");
+		
+		
+		
+		
 		this.domain = domain;
 		auth = new LoginDialog();
 		Authenticator.setDefault(auth);
@@ -39,7 +46,7 @@ public class ConnectionManager {
 		char[] key = null;
 		String k = "";
 		try {
-			url = new URL("http", domain, "/SimpleSync/genKey.php");
+			url = new URL("https", domain, "/SimpleSync/genKey.php");
 			conn = url.openConnection();
 			InputStreamReader in = new InputStreamReader(conn.getInputStream());
 			int c;
@@ -71,12 +78,32 @@ public class ConnectionManager {
 		// Add throws exception
 	}
 
-	public URL getURL(String path) {
+	public HttpURLConnection getURLConnection(String path) {
 		/**
 		 * TODO - Check connect - Check authentication
-		 */
-		try {
-			return new URL("http", domain, "/SimpleSync" + path);
+		 */		
+		try {        
+			/* Start of Fix */
+	        TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
+	            public java.security.cert.X509Certificate[] getAcceptedIssuers() { return null; }
+	            public void checkClientTrusted(X509Certificate[] certs, String authType) { }
+	            public void checkServerTrusted(X509Certificate[] certs, String authType) { }
+	
+	        } };
+	
+	        SSLContext sc = SSLContext.getInstance("SSL");
+	        sc.init(null, trustAllCerts, new java.security.SecureRandom());
+	        HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+	
+	        // Create all-trusting host name verifier
+	        HostnameVerifier allHostsValid = new HostnameVerifier() {
+	            public boolean verify(String hostname, SSLSession session) { return true; }
+	        };
+	        // Install the all-trusting host verifier
+	        HttpsURLConnection.setDefaultHostnameVerifier(allHostsValid);
+	        /* End of the fix*/
+        
+			return (HttpURLConnection) (new URL("https", domain, "/SimpleSync" + path).openConnection());
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			return null;
@@ -88,6 +115,6 @@ public class ConnectionManager {
 	}
 	
 	private void checkIn(){
-		//Client reieves key when logging in
+		//Client sends key to server to confirm 
 	}
 }

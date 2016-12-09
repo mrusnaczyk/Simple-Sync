@@ -1,8 +1,10 @@
 package sync;
 
 import java.io.BufferedInputStream;
+import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.security.cert.Certificate;
 import java.util.ArrayList;
 import java.util.TimerTask;
 import java.util.concurrent.Callable;
@@ -54,23 +56,39 @@ public class SyncManager extends TimerTask {
 
 
 	private JSONObject getRemoteTree() {
-		URL u = manager.getURL("/remoteFileTree.php");
-		URLConnection conn;
+		//URL u = manager.getURL("/remoteFileTree.php");
+		HttpsURLConnection conn;		
+		
 		BufferedInputStream in;
 		JSONTokener tokener;
 		JSONObject tree;
-
-		//Get the tree from the server
-		try {
-			conn = u.openConnection();
+		try{
+			conn = (HttpsURLConnection) manager.getURLConnection("/remoteFileTree.php");
+			conn.connect();
+			
+			
 			in = new BufferedInputStream(conn.getInputStream());
 			tokener = new JSONTokener(in);
 			tree = new JSONObject(tokener);
 			//return new JSONObject(tokener);
-			//System.out.println(tree.toString());
+			System.out.println(tree.toString());
 		} catch (Exception e) {
-			e.printStackTrace(System.out);
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+
+
+		//Get the tree from the server
+//		try {
+//			//conn = u.openConnection();
+//			in = new BufferedInputStream(conn.getInputStream());
+//			tokener = new JSONTokener(in);
+//			tree = new JSONObject(tokener);
+//			//return new JSONObject(tokener);
+//			System.out.println(tree.toString());
+//		} catch (Exception e) {
+//			e.printStackTrace(System.out);
+//		}
 		
 		//Parse the tree and convert it into an array
 		
