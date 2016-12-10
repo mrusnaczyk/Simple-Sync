@@ -1,4 +1,4 @@
-package sync;
+package sync.file;
 
 public class FileOperation {
 

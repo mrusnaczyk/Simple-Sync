@@ -1,4 +1,4 @@
-package sync;
+package sync.file;
 
 import java.io.BufferedInputStream;
 import java.io.UnsupportedEncodingException;

@@ -7,9 +7,10 @@ public class Settings {
 	// Location of the user's SimpleSync Folder
 	public static final Path homeDir = Paths.get(System.getProperty("user.home") + "\\SimpleSync");
 	// IP or FQDN of the server
-	public static final String domain = "cs.rusnaczyk.tk";
+	public static final String domain = "ipv6.rusnaczyk.tk";
+	//NOTE: if IPV6 is unavailable, use the domain cs.rusnaczyk.tk;
 	// How often the server will sync in seconds
-	public static final int syncInterval = 5;
+	public static final int syncInterval = 10;
 	// Nothing important down here
 	public static final String secretSecret = "frUEEUzL4za4fJVSWqWz5v=sUjXe%b!V+Sv=fVx!b?GnRUHGzn"
 			+ "&_-ff%bxy?Dfb6WLJj?f@G!JjrNgJSz=+J=^WasgdcYPkDdtZGXN-U3JsZD9@p_$@4FcJRC5aJ_QyJqu4v"

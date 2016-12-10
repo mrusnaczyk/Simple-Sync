@@ -14,6 +14,8 @@ import javax.net.ssl.*;
 import org.json.*;
 
 import net.ConnectionManager;
+import sync.file.FileDownload;
+import sync.file.FileOperation;
 
 public class SyncManager extends TimerTask {
 	private ConnectionManager manager;
@@ -66,7 +68,6 @@ public class SyncManager extends TimerTask {
 			conn = (HttpsURLConnection) manager.getURLConnection("/remoteFileTree.php");
 			conn.connect();
 			
-			
 			in = new BufferedInputStream(conn.getInputStream());
 			tokener = new JSONTokener(in);
 			tree = new JSONObject(tokener);
@@ -77,20 +78,6 @@ public class SyncManager extends TimerTask {
 			e.printStackTrace();
 		}
 
-
-		//Get the tree from the server
-//		try {
-//			//conn = u.openConnection();
-//			in = new BufferedInputStream(conn.getInputStream());
-//			tokener = new JSONTokener(in);
-//			tree = new JSONObject(tokener);
-//			//return new JSONObject(tokener);
-//			System.out.println(tree.toString());
-//		} catch (Exception e) {
-//			e.printStackTrace(System.out);
-//		}
-		
-		//Parse the tree and convert it into an array
 		
 		return null;
 	}

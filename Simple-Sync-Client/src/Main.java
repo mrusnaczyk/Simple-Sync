@@ -13,6 +13,7 @@ public class Main {
 		createUserDir();
 
 		ConnectionManager c = new ConnectionManager(Settings.domain);
+
 		Timer t = new Timer();
 		t.schedule(new SyncManager(c), 0, Settings.syncInterval * 1000);
 	}
