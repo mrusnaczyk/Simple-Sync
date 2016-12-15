@@ -1,3 +1,8 @@
+/**
+ * @author Mateusz Rusnaczyk
+ * 
+ */
+
 package sync.file;
 
 import java.io.BufferedInputStream;
@@ -9,7 +14,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.concurrent.Callable;
-import javax.net.ssl.*;
 
 import net.ConnectionManager;
 import util.Settings;
@@ -31,7 +35,6 @@ public class FileDownload extends FileOperation implements Callable<String> {
 		}
 		
 		this.m = m;
-		//u = m.getURL(q);
 	}
 
 	public String call() {
@@ -39,7 +42,6 @@ public class FileDownload extends FileOperation implements Callable<String> {
 		BufferedInputStream in;
 
 		try {
-			//conn = u.openConnection();
 			conn = m.getURLConnection(q);
 			in = new BufferedInputStream(conn.getInputStream());
 
