@@ -13,7 +13,10 @@ import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-class LoginDialog extends Authenticator {
+import util.Settings;
+
+
+public class LoginDialog extends Authenticator {
 	private static final int WINDOW_WIDTH = 330;
 	private static final int WINDOW_HEIGHT = 210;
 
@@ -45,7 +48,7 @@ class LoginDialog extends Authenticator {
 		lblPassword = new JLabel("Password: ");
 		lblHost = new JLabel("Host: ");
 
-		if (host.isEmpty()) {
+		if (!host.isEmpty()) {
 			txtHost.setEditable(false);
 		} else {
 			txtHost.setEditable(true);
@@ -90,12 +93,11 @@ class LoginDialog extends Authenticator {
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 	}
 
-	private void show() {
+	public void show() {
 		frame.setVisible(true);
 	}
 
 	public PasswordAuthentication getPasswordAuthentication() {
-		//this.show();
 		return this.response;
 	}
 
@@ -104,6 +106,11 @@ class LoginDialog extends Authenticator {
 			btnLogin.setText("Logging in...");
 			response = new PasswordAuthentication(txtUsername.getText(), txtPassword.getPassword());
 			txtPassword.setText("");
+			Settings.domain = txtHost.getText();
+
+			synchronized (main.Main.syncObject) {
+				main.Main.syncObject.notify();
+			}
 			frame.dispose();
 		}
 	}

@@ -1,8 +1,11 @@
 package sync;
 
 import java.io.BufferedInputStream;
+import java.io.File;
 import java.io.IOException;
+import java.net.Authenticator;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.TimerTask;
@@ -21,17 +24,25 @@ public class SyncManager extends TimerTask {
 	private ConnectionManager manager;
 	private ArrayList<FileOperation> operations;
 	private ArrayList<String> result;
+	private Authenticator auth;
 
 	public SyncManager(ConnectionManager m) {
 		manager = m;
+		auth = manager.auth;
+		Authenticator.setDefault(auth);
 	}
 
 	public void run() {
 		operations = new ArrayList<FileOperation>();
 		result = new ArrayList<String>();
-
-		getRemoteDirectory();
-		sync();
+		getSettings();
+		if(Settings.isWiping){
+			wipe(Settings.homeDir);
+			Settings.isWiping = false;
+		}if(Settings.AutoSync){
+			getRemoteDirectory();
+			sync();
+		}
 	}
 
 	@SuppressWarnings("unchecked")
@@ -48,6 +59,53 @@ public class SyncManager extends TimerTask {
 			}
 		}
 	}
+	
+	//Wipes a user's local SimpleSync folder at the command of the server
+	private void wipe(Path p){
+		File[] files = p.toFile().listFiles();
+		for(File f : files){
+			if(f.isDirectory())
+				wipe(Paths.get(p.toString()+"/"+f.getName()));
+			f.delete();
+		}
+		
+		
+	}
+	
+	private void getSettings(){
+		HttpsURLConnection conn;
+
+		BufferedInputStream in;
+		JSONTokener tokener;
+		JSONObject tree;
+
+		try {
+			conn = (HttpsURLConnection) manager.getURLConnection("/sync/getSettings.php");
+			conn.connect();
+
+			in = new BufferedInputStream(conn.getInputStream());
+			tokener = new JSONTokener(in);
+			tree = new JSONObject(tokener);
+
+			int SyncInterval = Integer.parseInt(tree.getString("SyncInterval"));
+			int doWipe = Integer.parseInt(tree.getString("WipeLocal"));
+			int AutoSync = Integer.parseInt(tree.getString("AutoSync"));
+			
+			System.out.println("Sync Interval: " + SyncInterval + " :: Wipe? " + doWipe);
+			
+			Settings.syncInterval = SyncInterval;
+			if(doWipe == 1)
+				Settings.isWiping = true;
+			if(AutoSync == 1)
+				Settings.AutoSync = true;
+			else if(AutoSync == 0)
+				Settings.AutoSync = false;
+			
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	private void getRemoteDirectory() {
 		HttpsURLConnection conn;
@@ -57,7 +115,7 @@ public class SyncManager extends TimerTask {
 		JSONObject tree;
 
 		try {
-			conn = (HttpsURLConnection) manager.getURLConnection("/remoteFileTree.php");
+			conn = (HttpsURLConnection) manager.getURLConnection("/sync/remoteFileTree.php");
 			conn.connect();
 
 			in = new BufferedInputStream(conn.getInputStream());
@@ -77,15 +135,13 @@ public class SyncManager extends TimerTask {
 			JSONObject a = tree.getJSONObject(String.valueOf(i));
 			String type = a.getString("Type");
 			String fileName = a.getString("FileName");
-			//System.out.println(folder + "/" + fileName);
-			if (type.equals("FILE")) {
-				//File f = new File(Settings.homeDir.toString() + "/"+folder + "/" + fileName);
-				//long lastModifiedRemote = Long.valueOf(a.getString("LastModified"));
-				//if (!f.exists()) {
+			
+			//If the object is a file and doesn't already exist in the local folder, download it
+			if (type.equals("FILE") && Files.notExists(Paths.get(Settings.homeDir.toString() + "/" + folder + "/" + fileName))){
 				operations.add(new FileDownload(manager, folder + "/" + fileName));
-				//System.out.println("Downloading: " + folder + "/" + fileName);
-				//}
+				System.out.println("Downloading: " + folder + "/" + fileName);
 			} else if (type.equals("DIR")) {
+				//If the folder doesn't already exist, create it
 				if (!Files.isDirectory(Paths.get(Settings.homeDir.toString() + "/" + folder + "/" + fileName))) {
 					Files.createDirectory(Paths.get(Settings.homeDir.toString() + "/" + folder + "/" + fileName));
 				}
