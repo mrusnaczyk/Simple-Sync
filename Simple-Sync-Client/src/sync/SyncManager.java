@@ -103,7 +103,8 @@ public class SyncManager extends TimerTask {
 			
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			//e.printStackTrace();
+			System.exit(0);
 		}
 	}
 
