@@ -32,7 +32,7 @@ public class FileDownload extends FileOperation implements Callable<String> {
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
-		
+
 		manager = m;
 		auth = manager.auth;
 		Authenticator.setDefault(auth);

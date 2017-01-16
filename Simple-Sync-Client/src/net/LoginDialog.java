@@ -15,7 +15,6 @@ import javax.swing.JTextField;
 
 import util.Settings;
 
-
 public class LoginDialog extends Authenticator {
 	private static final int WINDOW_WIDTH = 330;
 	private static final int WINDOW_HEIGHT = 210;

@@ -36,10 +36,11 @@ public class SyncManager extends TimerTask {
 		operations = new ArrayList<FileOperation>();
 		result = new ArrayList<String>();
 		getSettings();
-		if(Settings.isWiping){
+		if (Settings.isWiping) {
 			wipe(Settings.homeDir);
 			Settings.isWiping = false;
-		}if(Settings.AutoSync){
+		}
+		if (Settings.AutoSync) {
 			getRemoteDirectory();
 			sync();
 		}
@@ -59,20 +60,19 @@ public class SyncManager extends TimerTask {
 			}
 		}
 	}
-	
-	//Wipes a user's local SimpleSync folder at the command of the server
-	private void wipe(Path p){
+
+	// Wipes a user's local SimpleSync folder at the command of the server
+	private void wipe(Path p) {
 		File[] files = p.toFile().listFiles();
-		for(File f : files){
-			if(f.isDirectory())
-				wipe(Paths.get(p.toString()+"/"+f.getName()));
+		for (File f : files) {
+			if (f.isDirectory())
+				wipe(Paths.get(p.toString() + "/" + f.getName()));
 			f.delete();
 		}
-		
-		
+
 	}
-	
-	private void getSettings(){
+
+	private void getSettings() {
 		HttpsURLConnection conn;
 
 		BufferedInputStream in;
@@ -90,20 +90,19 @@ public class SyncManager extends TimerTask {
 			int SyncInterval = Integer.parseInt(tree.getString("SyncInterval"));
 			int doWipe = Integer.parseInt(tree.getString("WipeLocal"));
 			int AutoSync = Integer.parseInt(tree.getString("AutoSync"));
-			
+
 			System.out.println("Sync Interval: " + SyncInterval + " :: Wipe? " + doWipe);
-			
+
 			Settings.syncInterval = SyncInterval;
-			if(doWipe == 1)
+			if (doWipe == 1)
 				Settings.isWiping = true;
-			if(AutoSync == 1)
+			if (AutoSync == 1)
 				Settings.AutoSync = true;
-			else if(AutoSync == 0)
+			else if (AutoSync == 0)
 				Settings.AutoSync = false;
-			
 
 		} catch (Exception e) {
-			//e.printStackTrace();
+			// e.printStackTrace();
 			System.exit(0);
 		}
 	}
@@ -130,19 +129,19 @@ public class SyncManager extends TimerTask {
 		}
 
 	}
-	
+
 	private void parseJSON(JSONObject tree, String folder) throws IOException {
 		for (int i = 0; i < tree.length(); i++) {
 			JSONObject a = tree.getJSONObject(String.valueOf(i));
 			String type = a.getString("Type");
 			String fileName = a.getString("FileName");
-			
-			//If the object is a file and doesn't already exist in the local folder, download it
-			if (type.equals("FILE") && Files.notExists(Paths.get(Settings.homeDir.toString() + "/" + folder + "/" + fileName))){
+
+			// If the object is a file and doesn't already exist in the local folder, download it
+			if (type.equals("FILE")&& Files.notExists(Paths.get(Settings.homeDir.toString() + "/" + folder + "/" + fileName))) {
 				operations.add(new FileDownload(manager, folder + "/" + fileName));
 				System.out.println("Downloading: " + folder + "/" + fileName);
 			} else if (type.equals("DIR")) {
-				//If the folder doesn't already exist, create it
+				// If the folder doesn't already exist, create it
 				if (!Files.isDirectory(Paths.get(Settings.homeDir.toString() + "/" + folder + "/" + fileName))) {
 					Files.createDirectory(Paths.get(Settings.homeDir.toString() + "/" + folder + "/" + fileName));
 				}
@@ -152,6 +151,5 @@ public class SyncManager extends TimerTask {
 		}
 
 	}
-
 
 }
