@@ -18,7 +18,7 @@ public class Settings {
 	// True when the client is set to auto-sync
 	public static boolean AutoSync = false;
 	// A key.
-	public static final String secretSecret = "WfZ4nLWscKIxxsUFazYQSaJ94FQnsu8AoyPjXNI";
+	public static final String secretSecret = "REDACTED";
 
 	// http://stackoverflow.com/questions/7883542/getting-the-computer-name-in-java
 	private static String getComputerName() {

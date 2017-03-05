@@ -22,16 +22,11 @@ import javax.swing.JOptionPane;
 
 import util.Settings;
 
-/**
- * @author Mateusz Rusnaczyk
- *
- */
 public class ConnectionManager {
 	public LoginDialog auth;
 	private CookieManager chocolateChip;
 	private String domain;
 
-	// private TrustManager[] trustAllCerts;
 	private TrustManager[] trustManagers;
 	private SSLContext sc;
 	private HostnameVerifier hostVerify;

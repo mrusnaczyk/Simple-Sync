@@ -39,15 +39,6 @@ public class Main {
 			}
 		}
 
-		// Check if settings file exists, if not, create it
-//		if (!Files.exists(Paths.get(Settings.homeDir.toString() + "\\.settings.txt"))) {
-//			try {
-//				Files.createFile(Paths.get(Settings.homeDir.toString() + "\\.settings.txt"));
-//				Files.setAttribute(Paths.get(Settings.homeDir.toString() + "\\.settings.txt"), "dos:hidden", true);
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
-//		}
 	}
 
 }

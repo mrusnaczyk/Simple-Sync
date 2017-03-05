@@ -1,8 +1,3 @@
-/**
- * @author Mateusz Rusnaczyk
- * 
- */
-
 package sync.file;
 
 import java.io.BufferedInputStream;
